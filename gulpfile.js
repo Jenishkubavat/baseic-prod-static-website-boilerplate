@@ -4,9 +4,9 @@ const { src, dest, task, watch, series, parallel } = require('gulp');
 const del = require('del'); //For Cleaning build/dist for fresh export
 const options = require("./config"); //paths and other options from config.js
 const browserSync = require('browser-sync').create();
-var ts = require("gulp-typescript");
-var tsProject = ts.createProject("tsconfig.json");
-const sass = require('gulp-sass'); //For Compiling SASS files
+//var ts = require("gulp-typescript");
+//var tsProject = ts.createProject("tsconfig.json");
+const sass = require('gulp-sass')(require('sass')); //For Compiling SASS files
 const postcss = require('gulp-postcss'); //For Compiling tailwind utilities with tailwind config
 const concat = require('gulp-concat'); //For Concatinating js,css files
 const uglify = require('gulp-terser');//To Minify JS files
@@ -23,7 +23,7 @@ const logSymbols = require('log-symbols'); //For Symbolic Console logs :) :P
 function livePreview(done){
   browserSync.init({
     server: {
-      baseDir: options.paths.dist.base
+      baseDir: options.paths.dist.html
     },
     port: options.config.port || 5000
   });
@@ -39,7 +39,7 @@ function previewReload(done){
 
 //Development Tasks
 function devHTML(){
-  return src(`${options.paths.src.base}/**/*.html`).pipe(dest(options.paths.dist.base));
+  return src(`${options.paths.src.html}/**/*.html`).pipe(dest(options.paths.dist.html));
 } 
 
 function devStyles(){
@@ -81,7 +81,7 @@ function devClean(){
 
 //Production Tasks (Optimized Build for Live/Production Sites)
 function prodHTML(){
-  return src(`${options.paths.src.base}/**/*.html`).pipe(dest(options.paths.build.base));
+  return src(`${options.paths.src.html}/**/*.html`).pipe(dest(options.paths.build.html));
 }
 
 function prodStyles(){
